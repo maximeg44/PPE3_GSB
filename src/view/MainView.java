@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.EventQueue;
+import library.Persistence;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,6 +11,7 @@ import controller.Ctrl;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
 import java.awt.event.ActionEvent;
 
 /**
@@ -22,6 +24,7 @@ public class MainView extends JFrame implements MyView{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JButton btnManuel;
+	private static String hostName = null;
 
 	/**
 	 * Launch the application.
@@ -37,6 +40,8 @@ public class MainView extends JFrame implements MyView{
 					MainView frame = new MainView();
 					//Assignation d'un observateur sur cette vue
 					frame.assignListener(ctrl);
+					//Récupération du HostName pour la persistence
+					hostName = Persistence.getComputerFullName();
 					//Affichage de la vue
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -44,6 +49,10 @@ public class MainView extends JFrame implements MyView{
 				}
 			}
 		});
+	}
+	
+	public String getHostName(){
+		return hostName;
 	}
 
 	/**
@@ -71,7 +80,6 @@ public class MainView extends JFrame implements MyView{
 		btnFermer.setBounds(335, 227, 89, 23);
 		contentPane.add(btnFermer);
 	}
-
 	@Override
 	public void assignListener(Ctrl ctrl) {
 		this.btnManuel.setActionCommand("MainView_manuel");
