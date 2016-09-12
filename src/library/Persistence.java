@@ -1,6 +1,5 @@
 package library;
 
-import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -8,39 +7,12 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.GregorianCalendar;
-
-import controller.Ctrl;
 /**
  * Classe de persistance des objets dans une base SQL
  * @author xavier
  *
  */
 public abstract class Persistence {
-	
-	private static String hostName;
-	
-	public Persistence(){
-		String hostName = getComputerFullName();
-	}
-	
-	public static String getHostName(){
-		return hostName;
-	}
-	
-	/**
-	   * Return the computer full name. <br>
-	 * @return 
-	   * @return the name or <b>null</b> if the name cannot be found
-	*/
-	public static String getComputerFullName() {
-	    String hostName = null;
-	    try {
-	      final InetAddress addr = InetAddress.getLocalHost();
-	      hostName = new String(addr.getHostName());
-	    } catch(final Exception e) {
-	    }//end try
-	    return hostName;
-	  }//end getComputerFullName
 	
 	/**
 	 * Méthode d'INSERT d'un nouveau médicament
@@ -156,7 +128,7 @@ public abstract class Persistence {
 		{
 			//String connectionString ="jdbc:sqlserver://"+host+";database="+base+";user="+user+";password="+passwd;
 //			String connectionString ="jdbc:mysql://"+host+"/"+base+"?user="+user+"&password="+passwd;
-			String connectionString ="jdbc:sqlserver://"+getComputerFullName()+"\\MSSQLSERVER;databaseName=bdmedoclab;integratedsecurity=true;";
+			String connectionString ="jdbc:sqlserver://MAXIME-PC\\MSSQLSERVER;databaseName=bdmedoclab;integratedsecurity=true;";
 			conn = DriverManager.getConnection(connectionString);
 		}
 		catch (SQLException e) 
