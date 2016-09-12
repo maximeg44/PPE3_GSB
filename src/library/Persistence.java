@@ -117,16 +117,18 @@ public abstract class Persistence {
 	 * @throws SQLException l'exception SQL levée
 	 */
 	private static Connection connection() throws SQLException{
-		String host = "192.168.222.72";
+//		String host = "192.168.222.72";
 //		String host = "127.0.0.1:3306";
+		String host = "localhost";
 		String base = "bdMedocLab";
 		String user = "antoineZ";
 		String passwd = "zouzou";
 		Connection conn = null;
 		try
 		{
-			String connectionString ="jdbc:sqlserver://"+host+";database="+base+";user="+user+";password="+passwd;
+			//String connectionString ="jdbc:sqlserver://"+host+";database="+base+";user="+user+";password="+passwd;
 //			String connectionString ="jdbc:mysql://"+host+"/"+base+"?user="+user+"&password="+passwd;
+			String connectionString ="jdbc:sqlserver://MAXIME-PC\\SQLEXPRESS;databaseName=bdmedoclab;integratedsecurity=true;";
 			conn = DriverManager.getConnection(connectionString);
 		}
 		catch (SQLException e) 
