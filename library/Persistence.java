@@ -128,7 +128,7 @@ public abstract class Persistence {
 		{
 			//String connectionString ="jdbc:sqlserver://"+host+";database="+base+";user="+user+";password="+passwd;
 //			String connectionString ="jdbc:mysql://"+host+"/"+base+"?user="+user+"&password="+passwd;
-			String connectionString ="jdbc:sqlserver://MAXIME-PC\\SQLEXPRESS;databaseName=bdmedoclab;integratedsecurity=true;";
+			String connectionString ="jdbc:sqlserver://MAXIME-PC\\MSSQLSERVER;databaseName=bdmedoclab;integratedsecurity=true;";
 			conn = DriverManager.getConnection(connectionString);
 		}
 		catch (SQLException e) 
