@@ -1,5 +1,9 @@
 package controller;
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> branch 'master' of https://github.com/maximeg44/PPE3_GSB.git
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
