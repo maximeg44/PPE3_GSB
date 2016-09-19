@@ -13,6 +13,7 @@ import library.Persistence;
 import model.Form;
 import model.Medicine;
 import view.MedicineAdd;
+import view.MedicineAddMolecule;
 import view.MedicineChange;
 import view.MedicineHome;
 import view.MedicineSearch;
@@ -100,6 +101,14 @@ public class Ctrl implements ActionListener, MouseListener{
 				frame1.assignListener(this);
 				//Affichage de la vue
 				frame1.setVisible(true);
+				break;
+			case "ajoutMolecule":
+				//Création de la vue d'ajout des molécules
+				MedicineAddMolecule frame2 = new MedicineAddMolecule();
+				//Assigation d'un observateur sur cette vue
+				frame2.assignListener(this);
+				//affichage de la vue
+				frame2.setVisible(true);
 				break;
 			}
 			break;

@@ -22,6 +22,7 @@ public class MedicineHome extends JFrame implements MyView{
 	private JPanel contentPane;
 	private JButton btnAjout;
 	private JButton btnRechercherModifier;
+	private JButton btnAjoutMolecule;
 
 
 	/**
@@ -42,12 +43,16 @@ public class MedicineHome extends JFrame implements MyView{
 		lblNewLabel.setBounds(101, 50, 214, 14);
 		contentPane.add(lblNewLabel);
 		
-		btnAjout = new JButton("Ajouter");
+		btnAjout = new JButton("Ajouter un m\u00E9dicament");
+		btnAjout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnAjout.setBounds(101, 86, 214, 23);
 		contentPane.add(btnAjout);
 		
 		btnRechercherModifier = new JButton("Rechercher / Modifier");
-		btnRechercherModifier.setBounds(101, 120, 214, 23);
+		btnRechercherModifier.setBounds(101, 154, 214, 23);
 		contentPane.add(btnRechercherModifier);
 		
 		JButton btnFermer = new JButton("Fermer");
@@ -59,6 +64,14 @@ public class MedicineHome extends JFrame implements MyView{
 		btnFermer.setBounds(335, 227, 89, 23);
 		contentPane.add(btnFermer);
 		
+		btnAjoutMolecule = new JButton("Ajouter un principe actif");
+		btnAjoutMolecule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAjoutMolecule.setBounds(101, 120, 214, 23);
+		contentPane.add(btnAjoutMolecule);
+		
 		
 	}
 
@@ -69,6 +82,8 @@ public class MedicineHome extends JFrame implements MyView{
 		this.btnAjout.addActionListener(ctrl);
 		this.btnRechercherModifier.setActionCommand("MedicineHome_rechercherModifier");
 		this.btnRechercherModifier.addActionListener(ctrl);
+		this.btnAjoutMolecule.setActionCommand("MedicineHome_ajoutMolecule");
+		this.btnAjoutMolecule.addActionListener(ctrl);
 		
 	}
 }

@@ -142,12 +142,12 @@
  	 * @throws SQLException l'exception SQL levée
  	 */
  	private static Connection connection() throws SQLException{
- //		String host = "192.168.222.72";
- //		String host = "127.0.0.1:3306";
+ /*		String host = "192.168.222.72";
+    	String host = "127.0.0.1:3306";
  		String host = "localhost";
  		String base = "bdMedocLab";
  		String user = "antoineZ";
- 		String passwd = "zouzou";
+ 		String passwd = "zouzou";*/
  		Connection conn = null;
  		try
   		{
