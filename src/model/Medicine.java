@@ -9,6 +9,10 @@ import java.util.GregorianCalendar;
  */
 public class Medicine {
 	/**
+	 * L'id du médicament
+	 */
+	private int id;
+	/**
 	 * Le nom du médicament
 	 */
 	private String name;
@@ -29,27 +33,39 @@ public class Medicine {
 	 */
 	public static ArrayList<Medicine> allTheMedicines = new ArrayList<Medicine>();
 	
+	private ArrayList<Molecules> mesExcipiants;
 	/**
 	 * Construcuteur de la classe Medicament
 	 * @param name nom du nouveau médicament
 	 * @param itsForm forme pharmaceutique du nouveau médicament
 	 * @param patentDate date d'obtention du brevet du nouveau médicament
 	 */
-	public Medicine(String name, Form itsForm, GregorianCalendar patentDate, Molecules itsMolecule) {
+	public Medicine(int id, String name, Form itsForm, GregorianCalendar patentDate, Molecules itsMolecule) {
 		super();
+		mesExcipiants = new ArrayList<Molecules>();
+		this.id = id;
 		this.name = name;
 		this.itsForm = itsForm;
 		this.patentDate = patentDate;
 		this.itsMolecule = itsMolecule;
 		allTheMedicines.add(this);
 	}
-
+	public void addMyExcipiants(Molecules mol){
+		this.mesExcipiants.add(mol);
+	}
 	/**
 	 * Accesseur en lecture sur le nom du médicament
 	 * @return le nom du médicament
 	 */
 	public String getName() {
 		return name;
+	}
+	/**
+	 * Accesseur en lecture sur l'id du médicament
+	 * @return l'id du médicament
+	 */
+	public int getId(){
+		return id;
 	}
 
 	/**
@@ -59,7 +75,12 @@ public class Medicine {
 	public Form getItsForm() {
 		return itsForm;
 	}
-
+	/**
+	 * Accesseur en lecture sur le PA du médicament
+	 */
+	public Molecules getItsMolecule(){
+		return itsMolecule;
+	}
 	/**
 	 * Accesseur en lecture sur la date d'obtention du brevet du médicament
 	 * @return la date d'obtention du brevet du médicament
@@ -78,6 +99,14 @@ public class Medicine {
 		Medicine found = null;
 		for(Medicine m : Medicine.allTheMedicines){
 			if(m.getName().equals(name))
+				found=m;
+		}
+		return found;
+	}
+	public static Medicine getMedicineById(int id){
+		Medicine found = null;
+		for(Medicine m : Medicine.allTheMedicines){
+			if(m.getId() == id)
 				found=m;
 		}
 		return found;

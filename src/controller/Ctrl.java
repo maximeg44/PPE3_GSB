@@ -51,18 +51,31 @@ public class Ctrl implements ActionListener, MouseListener{
 		}
 		for(int i=0;i<dataMolecules.length;i++) {
 			new Molecules(Integer.parseInt(dataMolecules[i][0]),dataMolecules[i][1]);
-		}		
+		}
 		//Création des objets Medicine
-		String[][] dataMed = null;
-		try {
-			dataMed = Persistence.load("Medicament");
+				String[][] dataMed = null;
+				try {
+					dataMed = Persistence.load("Medicament");
+				} catch (SQLException e) {
+					String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
+					JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+				}
+				for(int i=0;i<dataMed.length;i++){
+					new Medicine(Integer.parseInt(dataMed[i][0]),dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]),Molecules.getMoleculeById(Integer.parseInt(dataMed[i][6])));
+				}				
+		//Création des association Molécules/Médicaments
+		String[][] dataExcipiant = null;
+		try{
+			dataExcipiant = Persistence.load("excipiant");
 		} catch (SQLException e) {
 			String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
 			JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
 		}
-		for(int i=0;i<dataMed.length;i++){
-			new Medicine(dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]));
+		for (int i=0;i<dataExcipiant.length;i++) {
+			Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])).addMyExcipiants(Molecules.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])));
+			Molecules.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])).addMyMedicament(Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])));
 		}
+		
 	}
 
 	/**
@@ -136,15 +149,16 @@ public class Ctrl implements ActionListener, MouseListener{
 					MedicineAdd.focusTxtName();
 				}
 				else{
+					int idMedicament = Medicine.getMedicineByName(nom).getId();
 					String nomF = MedicineAdd.getTxtForm();
 					Form forme = Form.getFormByName(nomF);
 					String dateB = MedicineAdd.getTxtPatentDate();
 					Molecules molecule = Molecules.getMoleculesByLibelle(actif);
 					//Création du nouvel objet Medicine
-					Medicine med = new Medicine(nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
+					Medicine med = new Medicine(idMedicament, nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
 					//INSERT dans la BD
 					try {
-						Persistence.insertMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate());
+						Persistence.insertMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate(),med.getItsMolecule().getId());
 						//Message de confirmation pour l'utilisateur
 						JOptionPane.showMessageDialog(null,"Le médicament a bien été ajouté","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
 						//Réinitialisation des champs
