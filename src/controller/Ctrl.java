@@ -12,6 +12,7 @@ import library.DatesConverter;
 import library.Persistence;
 import model.Form;
 import model.Medicine;
+import model.Molecules;
 import view.MedicineAdd;
 import view.MedicineAddMolecule;
 import view.MedicineChange;
@@ -40,6 +41,17 @@ public class Ctrl implements ActionListener, MouseListener{
 		for(int i=0;i<dataForm.length;i++){
 			new Form(Integer.parseInt(dataForm[i][0]),dataForm[i][1]);
 		}
+		//Création des objets Molecules
+		String[][] dataMolecules = null;
+		try{
+			dataMolecules = Persistence.load("molecule");
+		} catch (SQLException e) {
+			String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
+			JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+		}
+		for(int i=0;i<dataMolecules.length;i++) {
+			new Molecules(Integer.parseInt(dataMolecules[i][0]),dataMolecules[i][1]);
+		}		
 		//Création des objets Medicine
 		String[][] dataMed = null;
 		try {
@@ -86,7 +98,7 @@ public class Ctrl implements ActionListener, MouseListener{
 			switch(what){
 			case "ajout":
 				//Création de la vue d'ajout d'un médicament
-				MedicineAdd frame = new MedicineAdd(this.formsBox());
+				MedicineAdd frame = new MedicineAdd(this.formsBox(),this.moleculesBox());
 				//Assignation d'un observateur sur cette vue
 				frame.assignListener(this);
 				//Affichage de la vue
@@ -117,16 +129,19 @@ public class Ctrl implements ActionListener, MouseListener{
 			case "valider":
 				//Récupération des informations saisies par l'utilisateur
 				String nom = MedicineAdd.getTxtName();
-				if(nom.equals("")){
-					JOptionPane.showMessageDialog(null,"Le nom du médicament à été omis. Veillez à le saisir correctement.","Erreur Saisie",JOptionPane.WARNING_MESSAGE);
+				String actif = MedicineAdd.getTxtPrincipeActif();
+				String excipiant = MedicineAdd.getTxtExcipiant();
+				if(nom.equals("") && actif.equals(excipiant) ){
+					JOptionPane.showMessageDialog(null,"Le nom du médicament à été omis ou alors le principes actif est également excipiant. Veillez à le saisir correctement.","Erreur Saisie",JOptionPane.WARNING_MESSAGE);
 					MedicineAdd.focusTxtName();
 				}
 				else{
 					String nomF = MedicineAdd.getTxtForm();
 					Form forme = Form.getFormByName(nomF);
 					String dateB = MedicineAdd.getTxtPatentDate();
+					Molecules molecule = Molecules.getMoleculesByLibelle(actif);
 					//Création du nouvel objet Medicine
-					Medicine med = new Medicine(nom,forme,DatesConverter.FRStringToDate(dateB));
+					Medicine med = new Medicine(nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
 					//INSERT dans la BD
 					try {
 						Persistence.insertMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate());
@@ -207,6 +222,15 @@ public class Ctrl implements ActionListener, MouseListener{
 		String[] liste=new String[Form.allTheForms.size()];
 		for(Form l : Form.allTheForms){
 			liste[i]=l.getName();
+			i++;
+		}
+		return liste;
+	}
+	private String[] moleculesBox(){
+		int i=0;
+		String[] liste = new String[Molecules.allTheMolecules.size()];
+		for (Molecules m : Molecules.allTheMolecules){
+			liste[i]=m.getLibelle();
 			i++;
 		}
 		return liste;

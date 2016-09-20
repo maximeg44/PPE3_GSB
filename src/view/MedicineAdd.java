@@ -30,6 +30,8 @@ public class MedicineAdd extends JDialog implements MyView{
 	private static JTextField txtNom;
 	private static JComboBox<String> cbxFormes;
 	private static JTextField txtBrevet;
+	private static JComboBox<String> cbxPrincipesActifs;
+	private static JComboBox<String> cbxExcipiant;
 
 	/**
 	 * Méthode statique permettant de réinitialiser les champs
@@ -54,7 +56,20 @@ public class MedicineAdd extends JDialog implements MyView{
 	public static String getTxtForm(){
 		return (String) cbxFormes.getSelectedItem();
 	}
-	
+	/**
+	 * Méthode statique permettant d'obtenir la sélection de la liste déroulante PA
+	 * @return la selection de la liste déroulante Principe Actifs
+	 */
+	public static String getTxtPrincipeActif(){
+		return (String) cbxPrincipesActifs.getSelectedItem();
+	}
+	/**
+	 * Méthode statique permettant d'obtenir la sélection de la liste déroulante Excipiant
+	 * @return la selection de la liste déroulante Excipiant
+	 */
+	public static String getTxtExcipiant(){
+		return (String) cbxExcipiant.getSelectedItem();
+	}
 	/**
 	 * Méthode statique permettant d'obtenir le contenu du champ texte date brevet
 	 * @return le contenu du champ texte date brevet
@@ -75,7 +90,7 @@ public class MedicineAdd extends JDialog implements MyView{
 	 * Create the dialog.
 	 * @param forms les formes à intégrer dans la liste déroulante
 	 */
-	public MedicineAdd(String[] forms) {
+	public MedicineAdd(String[] forms, String [] molecules) {
 		setTitle("M\u00E9dicament - Ajouter");
 		setModal(true);
 		setBounds(100, 100, 450, 300);
@@ -99,7 +114,7 @@ public class MedicineAdd extends JDialog implements MyView{
 		lblForme.setBounds(63, 128, 70, 14);
 		contentPanel.add(lblForme);
 		
-		cbxFormes = new JComboBox<String>(forms);
+		cbxFormes = new JComboBox<String>(forms); //forms à remettre dans les paranthèses
 		cbxFormes.setBounds(140, 125, 192, 20);
 		contentPanel.add(cbxFormes);
 		
@@ -112,6 +127,24 @@ public class MedicineAdd extends JDialog implements MyView{
 		txtBrevet.setBounds(140, 84, 192, 20);
 		contentPanel.add(txtBrevet);
 		txtBrevet.setColumns(10);
+		
+		cbxPrincipesActifs = new JComboBox<String>(molecules); //molecules à remettre dans les paranthèses
+		cbxPrincipesActifs.setBounds(140, 156, 192, 20);
+		contentPanel.add(cbxPrincipesActifs);
+		
+		JLabel lblPrincipeActif = new JLabel("Principe actif :");
+		lblPrincipeActif.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPrincipeActif.setBounds(63, 159, 70, 14);
+		contentPanel.add(lblPrincipeActif);
+		
+		cbxExcipiant = new JComboBox<String>(molecules); //molecules à remettre dans les paranthèses
+		cbxExcipiant.setBounds(140, 187, 192, 20);
+		contentPanel.add(cbxExcipiant);
+		
+		JLabel lblExcipiant = new JLabel("Excipiant :");
+		lblExcipiant.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblExcipiant.setBounds(63, 190, 70, 14);
+		contentPanel.add(lblExcipiant);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

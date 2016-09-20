@@ -46,15 +46,15 @@
  	 * @param patentDate la date d'obtention du brevet du nouveau médicament
  	 * @throws SQLException l'exception SQL levée
  	 */
- 	public static void insertMedicine(String name, int idForm, GregorianCalendar patentDate) throws SQLException{
+ 	public static void insertMedicine(String name, int idForm, GregorianCalendar patentDate, int idMolecule) throws SQLException{
  		Connection cn = Persistence.connection();
  		Statement stmt;
  		try{
  			 stmt = cn.createStatement();
  			 if(patentDate!=null)
- 				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet) VALUES ('"+name+"',"+idForm+",'"+DatesConverter.dateToStringUS(patentDate)+"')");
+ 				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet,idMolecule,idEffet) VALUES ('"+name+"',"+idForm+",'"+DatesConverter.dateToStringUS(patentDate)+idMolecule+"')");
  			 else
- 				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet) VALUES ('"+name+"',"+idForm+",null)");
+ 				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet) VALUES ('"+name+"',"+idForm+idMolecule+",null)");
  		}catch (SQLException e){
  			throw e;
  		}

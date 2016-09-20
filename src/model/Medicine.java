@@ -21,6 +21,10 @@ public class Medicine {
 	 */
 	private GregorianCalendar patentDate;
 	/**
+	 * Molécule pharmaceutique du médicament
+	 */
+	private Molecules itsMolecule;
+	/**
 	 * Liste statique de tous les médicaments
 	 */
 	public static ArrayList<Medicine> allTheMedicines = new ArrayList<Medicine>();
@@ -31,11 +35,12 @@ public class Medicine {
 	 * @param itsForm forme pharmaceutique du nouveau médicament
 	 * @param patentDate date d'obtention du brevet du nouveau médicament
 	 */
-	public Medicine(String name, Form itsForm, GregorianCalendar patentDate) {
+	public Medicine(String name, Form itsForm, GregorianCalendar patentDate, Molecules itsMolecule) {
 		super();
 		this.name = name;
 		this.itsForm = itsForm;
 		this.patentDate = patentDate;
+		this.itsMolecule = itsMolecule;
 		allTheMedicines.add(this);
 	}
 
