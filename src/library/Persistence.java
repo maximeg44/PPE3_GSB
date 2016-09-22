@@ -7,7 +7,6 @@
   import java.sql.SQLException;
   import java.sql.Statement;
   import java.util.GregorianCalendar;
-  import controller.Ctrl;
   /**
    * Classe de persistance des objets dans une base SQL
    * @author xavier

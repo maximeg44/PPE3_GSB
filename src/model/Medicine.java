@@ -32,7 +32,9 @@ public class Medicine {
 	 * Liste statique de tous les médicaments
 	 */
 	public static ArrayList<Medicine> allTheMedicines = new ArrayList<Medicine>();
-	
+	/**
+	 * Liste de tous les Excipiants
+	 */
 	private ArrayList<Molecules> mesExcipiants;
 	/**
 	 * Construcuteur de la classe Medicament

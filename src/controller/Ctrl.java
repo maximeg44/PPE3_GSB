@@ -149,7 +149,7 @@ public class Ctrl implements ActionListener, MouseListener{
 					MedicineAdd.focusTxtName();
 				}
 				else{
-					int idMedicament = Medicine.getMedicineByName(nom).getId();
+					int idMedicament =  Medicine.getMedicineByName(nom).getId();
 					String nomF = MedicineAdd.getTxtForm();
 					Form forme = Form.getFormByName(nomF);
 					String dateB = MedicineAdd.getTxtPatentDate();

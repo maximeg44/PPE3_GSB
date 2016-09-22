@@ -11,7 +11,6 @@ import controller.Ctrl;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
 import java.awt.event.ActionEvent;
 
 /**

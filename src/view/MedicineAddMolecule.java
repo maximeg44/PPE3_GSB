@@ -8,8 +8,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import java.awt.BorderLayout;
 
 public class MedicineAddMolecule extends JFrame implements MyView{
 	private static final long serialVersionUID = 1L;
