@@ -27,7 +27,7 @@ public class Medicine {
 	/**
 	 * Molécule pharmaceutique du médicament
 	 */
-	private Molecules itsMolecule;
+	private Molecule itsMolecule;
 	/**
 	 * Liste statique de tous les médicaments
 	 */
@@ -35,16 +35,16 @@ public class Medicine {
 	/**
 	 * Liste de tous les Excipiants
 	 */
-	private ArrayList<Molecules> mesExcipiants;
+	private ArrayList<Molecule> mesExcipiants;
 	/**
 	 * Construcuteur de la classe Medicament
 	 * @param name nom du nouveau médicament
 	 * @param itsForm forme pharmaceutique du nouveau médicament
 	 * @param patentDate date d'obtention du brevet du nouveau médicament
 	 */
-	public Medicine(int id, String name, Form itsForm, GregorianCalendar patentDate, Molecules itsMolecule) {
+	public Medicine(int id, String name, Form itsForm, GregorianCalendar patentDate, Molecule itsMolecule) {
 		super();
-		mesExcipiants = new ArrayList<Molecules>();
+		mesExcipiants = new ArrayList<Molecule>();
 		this.id = id;
 		this.name = name;
 		this.itsForm = itsForm;
@@ -52,7 +52,7 @@ public class Medicine {
 		this.itsMolecule = itsMolecule;
 		allTheMedicines.add(this);
 	}
-	public void addMyExcipiants(Molecules mol){
+	public void addMyExcipiants(Molecule mol){
 		this.mesExcipiants.add(mol);
 	}
 	/**
@@ -80,7 +80,7 @@ public class Medicine {
 	/**
 	 * Accesseur en lecture sur le PA du médicament
 	 */
-	public Molecules getItsMolecule(){
+	public Molecule getItsMolecule(){
 		return itsMolecule;
 	}
 	/**

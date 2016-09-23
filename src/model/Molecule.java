@@ -2,20 +2,20 @@ package model;
 
 import java.util.ArrayList;
 
-public class Molecules {
+public class Molecule {
 	private int id;
 	private String libelle;
 	private ArrayList<Medicine> mesMedicaments;
 	
-	public static ArrayList<Molecules> allTheMolecules = new ArrayList<Molecules>();
+	public static ArrayList<Molecule> allTheMolecules = new ArrayList<Molecule>();
 	
-	public Molecules(){}
+	public Molecule(){}
 	/**
-	 * Constructeur de la classe Forme
+	 * Constructeur de la classe Molecule
 	 * @param id identifiant de la nouvelle molecule
 	 * @param libelle nom de la nouvelle molecule
 	 */
-	public Molecules(int id, String libelle){
+	public Molecule(int id, String libelle){
 		super();
 		mesMedicaments = new ArrayList<Medicine>();
 		this.id=id;
@@ -35,18 +35,18 @@ public class Molecules {
 		return libelle;
 	}
 	
-	public static Molecules getMoleculeById(int id){
-		Molecules found = null;
-		for (Molecules m : Molecules.allTheMolecules){
+	public static Molecule getMoleculeById(int id){
+		Molecule found = null;
+		for (Molecule m : Molecule.allTheMolecules){
 			if(m.getId()==id)
 				found=m;
 		}
 		return found;
 	}
 	
-	public static Molecules getMoleculesByLibelle(String libelle){
-		Molecules found = null;
-		for (Molecules m : Molecules.allTheMolecules){
+	public static Molecule getMoleculesByLibelle(String libelle){
+		Molecule found = null;
+		for (Molecule m : Molecule.allTheMolecules){
 			if(m.getLibelle()==libelle)
 				found=m;
 		}

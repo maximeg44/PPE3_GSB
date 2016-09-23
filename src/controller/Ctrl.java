@@ -12,7 +12,7 @@ import library.DatesConverter;
 import library.Persistence;
 import model.Form;
 import model.Medicine;
-import model.Molecules;
+import model.Molecule;
 import view.MedicineAdd;
 import view.MedicineAddMolecule;
 import view.MedicineChange;
@@ -50,7 +50,7 @@ public class Ctrl implements ActionListener, MouseListener{
 			JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
 		}
 		for(int i=0;i<dataMolecules.length;i++) {
-			new Molecules(Integer.parseInt(dataMolecules[i][0]),dataMolecules[i][1]);
+			new Molecule(Integer.parseInt(dataMolecules[i][0]),dataMolecules[i][1]);
 		}
 		//Création des objets Medicine
 				String[][] dataMed = null;
@@ -61,7 +61,7 @@ public class Ctrl implements ActionListener, MouseListener{
 					JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
 				}
 				for(int i=0;i<dataMed.length;i++){
-					new Medicine(Integer.parseInt(dataMed[i][0]),dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]),Molecules.getMoleculeById(Integer.parseInt(dataMed[i][6])));
+					new Medicine(Integer.parseInt(dataMed[i][0]),dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]),Molecule.getMoleculeById(Integer.parseInt(dataMed[i][6])));
 				}				
 		//Création des association Molécules/Médicaments
 		String[][] dataExcipiant = null;
@@ -72,8 +72,8 @@ public class Ctrl implements ActionListener, MouseListener{
 			JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
 		}
 		for (int i=0;i<dataExcipiant.length;i++) {
-			Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])).addMyExcipiants(Molecules.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])));
-			Molecules.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])).addMyMedicament(Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])));
+			Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])).addMyExcipiants(Molecule.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])));
+			Molecule.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])).addMyMedicament(Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])));
 		}
 		
 	}
@@ -153,7 +153,7 @@ public class Ctrl implements ActionListener, MouseListener{
 					String nomF = MedicineAdd.getTxtForm();
 					Form forme = Form.getFormByName(nomF);
 					String dateB = MedicineAdd.getTxtPatentDate();
-					Molecules molecule = Molecules.getMoleculesByLibelle(actif);
+					Molecule molecule = Molecule.getMoleculesByLibelle(actif);
 					//Création du nouvel objet Medicine
 					Medicine med = new Medicine(idMedicament, nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
 					//INSERT dans la BD
@@ -242,8 +242,8 @@ public class Ctrl implements ActionListener, MouseListener{
 	}
 	private String[] moleculesBox(){
 		int i=0;
-		String[] liste = new String[Molecules.allTheMolecules.size()];
-		for (Molecules m : Molecules.allTheMolecules){
+		String[] liste = new String[Molecule.allTheMolecules.size()];
+		for (Molecule m : Molecule.allTheMolecules){
 			liste[i]=m.getLibelle();
 			i++;
 		}
