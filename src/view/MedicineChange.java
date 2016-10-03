@@ -29,6 +29,7 @@ public class MedicineChange extends JDialog implements MyView{
 	private static JTextField txtNom;
 	private static JComboBox<String> cbxFormes;
 	private static JTextField txtBrevet;
+	private JButton btnPdf;
 	/**
 	 * Méthode statique permettant d'obtenir le contenu du champ texte nom
 	 * @return le contenu du champ texte nom
@@ -84,7 +85,7 @@ public class MedicineChange extends JDialog implements MyView{
 		lblForme.setBounds(63, 127, 70, 14);
 		contentPanel.add(lblForme);
 		
-		cbxFormes = new JComboBox<String>(forms);
+		cbxFormes = new JComboBox<String>(forms); //
 		cbxFormes.setBounds(140, 124, 192, 20);
 		contentPanel.add(cbxFormes);
 		cbxFormes.setSelectedItem(medicine[1]);
@@ -99,6 +100,14 @@ public class MedicineChange extends JDialog implements MyView{
 		contentPanel.add(txtBrevet);
 		txtBrevet.setColumns(10);
 		txtBrevet.setText(medicine[2]);
+		
+		btnPdf = new JButton("PDF");
+		btnPdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnPdf.setBounds(243, 173, 89, 23);
+		contentPanel.add(btnPdf);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -125,5 +134,7 @@ public class MedicineChange extends JDialog implements MyView{
 	public void assignListener(Ctrl ctrl) {
 		this.btnValider.setActionCommand("MedicineChange_valider");
 		this.btnValider.addActionListener(ctrl);
+		this.btnPdf.setActionCommand("MedicineChange_PDF");
+		this.btnPdf.addActionListener(ctrl);
 	}
 }

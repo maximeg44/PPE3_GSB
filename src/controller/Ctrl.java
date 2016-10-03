@@ -3,10 +3,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import library.DatesConverter;
 import library.Persistence;
@@ -178,6 +185,12 @@ public class Ctrl implements ActionListener, MouseListener{
 				break;
 		case "MedicineChange":
 			switch(what){
+			case "PDF":
+				String name = MedicineChange.getTxtName();
+				//String active = MedicineChange.getTxtPrincipeActif();
+				//String exci = MedicineChange.getTxtExcipiant();
+				this.createPdf(name,"coucou","hello");
+				break;
 			case "valider":
 				//Récupération des informations saisies par l'utilisateur
 				String nom = MedicineChange.getTxtName();
@@ -224,6 +237,24 @@ public class Ctrl implements ActionListener, MouseListener{
 			i++;
 		}
 		return liste;
+	}
+	private void createPdf(String name, String actif, String excipient){
+		Document document = new Document();
+		try{
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Notice "+name+" .pdf"));
+			document.open();
+			document.addAuthor(Persistence.getComputerFullName());
+			document.addTitle(name);
+			document.add(new Paragraph("Contenu du paragraphe"));
+			document.close();
+			writer.close();
+		} catch (DocumentException e)
+	      {
+	         e.printStackTrace();
+	      } catch (FileNotFoundException e)
+	      {
+	         e.printStackTrace();
+	      }
 	}
 
 	/**
