@@ -51,7 +51,7 @@
  		try{
  			 stmt = cn.createStatement();
  			 if(patentDate!=null)
- 				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet,idMolecule,idEffet) VALUES ('"+name+"',"+idForm+",'"+DatesConverter.dateToStringUS(patentDate)+idMolecule+"')");
+ 				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet,idMolecule,idEffet) VALUES ('"+name+"','"+idForm+"','"+DatesConverter.dateToStringFR(patentDate)+"','"+idMolecule+"',1)");
  			 else
  				 stmt.executeUpdate("INSERT INTO medicament (nom,idForme,dateBrevet) VALUES ('"+name+"',"+idForm+idMolecule+",null)");
  		}catch (SQLException e){
