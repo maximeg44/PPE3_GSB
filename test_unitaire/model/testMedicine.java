@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -21,7 +22,7 @@ public class testMedicine {
 		form = new Form (1, "solution");
 		mol = new Molecule(1,"libelleMol");
 		date = new GregorianCalendar(2000, 0, 0);
-		medicament = new Medicine (1, "medoc", form, date, mol);
+		medicament = new Medicine ("medoc", form, date, mol);
 		mesMedocs = new ArrayList<Medicine>();
 		mesMedocs.add(medicament);
 	}
@@ -33,10 +34,6 @@ public class testMedicine {
 	@Test
 	public void test_getName() {
 		assertEquals("medoc", medicament.getName());
-	}
-	@Test
-	public void test_getId(){
-		assertEquals(1, medicament.getId());
 	}
 	@Test
 	public void test_getItsForm(){
@@ -55,7 +52,7 @@ public class testMedicine {
 		assertEquals(Medicine.getMedicineByName("medoc"), medicament);
 	}
 	@Test
-	public void test_getMedicineById(){
+	public void test_getMedicineById() throws SQLException{
 		assertEquals(Medicine.getMedicineById(1), medicament);
 	}
 	@Test

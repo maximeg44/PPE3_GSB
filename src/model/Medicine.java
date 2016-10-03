@@ -1,7 +1,10 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+
+import library.Persistence;
 /**
  * Classe d'objet metier MEDICAMENT
  * @author xavier
@@ -42,10 +45,9 @@ public class Medicine {
 	 * @param itsForm forme pharmaceutique du nouveau médicament
 	 * @param patentDate date d'obtention du brevet du nouveau médicament
 	 */
-	public Medicine(int id, String name, Form itsForm, GregorianCalendar patentDate, Molecule itsMolecule) {
+	public Medicine(String name, Form itsForm, GregorianCalendar patentDate, Molecule itsMolecule) {
 		super();
 		mesExcipiants = new ArrayList<Molecule>();
-		this.id = id;
 		this.name = name;
 		this.itsForm = itsForm;
 		this.patentDate = patentDate;
@@ -61,13 +63,6 @@ public class Medicine {
 	 */
 	public String getName() {
 		return name;
-	}
-	/**
-	 * Accesseur en lecture sur l'id du médicament
-	 * @return l'id du médicament
-	 */
-	public int getId(){
-		return id;
 	}
 
 	/**
@@ -105,12 +100,9 @@ public class Medicine {
 		}
 		return found;
 	}
-	public static Medicine getMedicineById(int id){
-		Medicine found = null;
-		for(Medicine m : Medicine.allTheMedicines){
-			if(m.getId() == id)
-				found=m;
-		}
+	public static Medicine getMedicineById(int id) throws SQLException{
+		String nom = Persistence.searchIdMedicine(id);
+		Medicine found = getMedicineByName(nom);
 		return found;
 	}
 

@@ -28,8 +28,10 @@ public class Ctrl implements ActionListener, MouseListener{
 	/**
 	 * Constructeur de la classe Ctrl
 	 * Ce constructeur permet, en plus de créer une instance de Ctrl, de créer tous les objets de l'application à partir de la base de données
+	 * @throws SQLException exception sql
+	 * @throws NumberFormatException 
 	 */
-	public Ctrl(){
+	public Ctrl() throws NumberFormatException, SQLException{
 		//Création des objets Forme
 		String[][] dataForm = null;
 		try {
@@ -61,7 +63,7 @@ public class Ctrl implements ActionListener, MouseListener{
 					JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
 				}
 				for(int i=0;i<dataMed.length;i++){
-					new Medicine(Integer.parseInt(dataMed[i][0]),dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]),Molecule.getMoleculeById(Integer.parseInt(dataMed[i][6])));
+					new Medicine(dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]),Molecule.getMoleculeById(Integer.parseInt(dataMed[i][6])));
 				}				
 		//Création des association Molécules/Médicaments
 		String[][] dataExcipiant = null;
@@ -73,9 +75,7 @@ public class Ctrl implements ActionListener, MouseListener{
 		}
 		for (int i=0;i<dataExcipiant.length;i++) {
 			Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])).addMyExcipiants(Molecule.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])));
-			Molecule.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])).addMyMedicament(Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])));
 		}
-		
 	}
 
 	/**
@@ -149,13 +149,12 @@ public class Ctrl implements ActionListener, MouseListener{
 					MedicineAdd.focusTxtName();
 				}
 				else{
-					int idMedicament =  Medicine.getMedicineByName(nom).getId();
 					String nomF = MedicineAdd.getTxtForm();
 					Form forme = Form.getFormByName(nomF);
 					String dateB = MedicineAdd.getTxtPatentDate();
 					Molecule molecule = Molecule.getMoleculesByLibelle(actif);
 					//Création du nouvel objet Medicine
-					Medicine med = new Medicine(idMedicament, nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
+					Medicine med = new Medicine(nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
 					//INSERT dans la BD
 					try {
 						Persistence.insertMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate(),med.getItsMolecule().getId());

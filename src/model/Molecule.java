@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public class Molecule {
 	private int id;
-	private String libelle;
-	private ArrayList<Medicine> mesMedicaments;
-	
+	private String libelle;	
 	public static ArrayList<Molecule> allTheMolecules = new ArrayList<Molecule>();
 	
 	public Molecule(){}
@@ -17,14 +15,9 @@ public class Molecule {
 	 */
 	public Molecule(int id, String libelle){
 		super();
-		mesMedicaments = new ArrayList<Medicine>();
 		this.id=id;
 		this.libelle=libelle;
 		allTheMolecules.add(this);
-	}
-	
-	public void addMyMedicament (Medicine med){
-		this.mesMedicaments.add(med);
 	}
 	
 	public int getId(){

@@ -198,4 +198,29 @@
  			Persistence.closeConnection(cn);
  		}
  	}
+ 	/**
+ 	 * Méthode qui permet de récupérer le nom d'un médicament via un ID médicament
+ 	 * @throws SQLException l'exception SQL levée
+ 	 */
+ 	public static String searchIdMedicine(int id) throws SQLException{
+ 		Connection cn = Persistence.connection();
+ 		Statement stmt;
+ 		String nom;
+ 		try{
+ 			stmt = cn.createStatement();
+ 			nom = stmt.executeQuery("Select nom FROM medicament where identifiant ="+ id ).toString();
+ 		}catch(SQLException e){
+ 			throw e;
+ 		}
+ 		finally{
+ 			Persistence.closeConnection(cn);
+ 		}
+ 		return nom;
+ 		
+ 	}
+ 	
+ 	
+ 	
+ 	
+ 	
  }
