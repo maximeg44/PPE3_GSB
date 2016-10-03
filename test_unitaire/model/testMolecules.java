@@ -38,10 +38,5 @@ public class testMolecules {
 	@Test
 	public void test_getMoleculesByLibelle(){
 		assertEquals(Molecule.getMoleculesByLibelle("nomMol"), maMolecule);
-	}
-	@Test
-	public void test_addMyMedicament(){
-		
-	}
-	
+	}	
 }

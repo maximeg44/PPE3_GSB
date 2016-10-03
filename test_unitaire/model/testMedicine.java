@@ -53,7 +53,7 @@ public class testMedicine {
 	}
 	@Test
 	public void test_getMedicineById() throws SQLException{
-		assertEquals(Medicine.getMedicineById(1), medicament);
+		assertEquals(Medicine.getMedicineByName(fakePersistence.searchIdMedicine(1)), medicament);
 	}
 	@Test
 	public void test_setItsForm(){

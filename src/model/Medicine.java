@@ -12,10 +12,6 @@ import library.Persistence;
  */
 public class Medicine {
 	/**
-	 * L'id du médicament
-	 */
-	private int id;
-	/**
 	 * Le nom du médicament
 	 */
 	private String name;
