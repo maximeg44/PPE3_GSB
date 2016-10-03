@@ -66,7 +66,7 @@ public class Ctrl implements ActionListener, MouseListener{
 					new Medicine(dataMed[i][1],Form.getFormById(Integer.parseInt(dataMed[i][5])),DatesConverter.USStringToDate(dataMed[i][2]),Molecule.getMoleculeById(Integer.parseInt(dataMed[i][6])));
 				}				
 		//Création des association Molécules/Médicaments
-		String[][] dataExcipiant = null;
+		/*String[][] dataExcipiant = null;
 		try{
 			dataExcipiant = Persistence.load("excipiant");
 		} catch (SQLException e) {
@@ -75,7 +75,7 @@ public class Ctrl implements ActionListener, MouseListener{
 		}
 		for (int i=0;i<dataExcipiant.length;i++) {
 			Medicine.getMedicineById(Integer.parseInt(dataExcipiant[i][1])).addMyExcipiants(Molecule.getMoleculeById(Integer.parseInt(dataExcipiant[i][0])));
-		}
+			}*/
 	}
 
 	/**
