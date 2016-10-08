@@ -29,7 +29,16 @@ public class Form {
 		super();
 		this.id = id;
 		this.name = name;
-		allTheForms.add(this);
+		boolean var = true;
+		int i = 0;
+		while ( i<Form.allTheForms.size() && var){
+			if (Form.allTheForms.get(i).getId() == id && Form.allTheForms.get(i).getName().equals(name)){
+				var = false;
+			}
+			i++;	
+		}
+		if (var)
+			allTheForms.add(this);
 	}
 	/**
 	 * Accesseur en lecture sur l'identifiant de la forme

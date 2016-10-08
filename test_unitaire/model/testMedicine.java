@@ -15,7 +15,8 @@ public class testMedicine {
 	private Form form;
 	private Molecule mol;
 	private GregorianCalendar date;
-	private ArrayList<Medicine> mesMedocs;
+	private static ArrayList<Medicine> mesMedocs = new ArrayList<Medicine>();
+	private ArrayList<Molecule> mesExcipiants;
 
 	@Before
 	public void setUp() throws Exception {
@@ -23,7 +24,6 @@ public class testMedicine {
 		mol = new Molecule(1,"libelleMol");
 		date = new GregorianCalendar(2000, 0, 0);
 		medicament = new Medicine ("medoc", form, date, mol);
-		mesMedocs = new ArrayList<Medicine>();
 		mesMedocs.add(medicament);
 	}
 	

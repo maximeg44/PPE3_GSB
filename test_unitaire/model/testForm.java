@@ -33,10 +33,25 @@ public class testForm {
 	}
 	@Test
 	public void test_getFormById(){
-		assertEquals(Form.getFormById(1), form);
+		Form form2 = new Form (2,"anOtherForm");
+		assertEquals(Form.getFormById(2), form2);
 	}
 	@Test
 	public void test_getFormByName(){
 		assertEquals(Form.getFormByName("maForme"), form);
+	}
+	@Test
+	public void test_addAlltheForms(){
+		int nbrForm = Form.allTheForms.size();
+		Form form3 = new Form (3,"anOtherForm");
+		nbrForm += 1;
+		//mesFormes.add(form2);
+		assertEquals(nbrForm, Form.allTheForms.size());
+	}
+	@Test
+	public void test_addAlltheFromsNtimes(){
+		int nbrForm = Form.allTheForms.size();
+		Form form4 = new Form (1,"maForme");
+		assertEquals(nbrForm, Form.allTheForms.size());
 	}
 }
