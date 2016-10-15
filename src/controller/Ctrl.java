@@ -6,10 +6,12 @@ import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
+import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -230,9 +232,19 @@ public class Ctrl implements ActionListener, MouseListener{
 			switch(what){
 			case "PDF":
 				String name = MedicineChange.getTxtName();
-				//String active = MedicineChange.getTxtPrincipeActif();
-				//String exci = MedicineChange.getTxtExcipiant();
-				this.createPdf(name,"coucou","hello");
+				Medicine medicament=null;
+				for (Medicine med : Medicine.allTheMedicines) {
+					if(med.getName().equals(name)){
+						medicament = med;
+					}
+				}
+				String nameMolecule = medicament.getItsMolecule().getLibelle();
+				String form = medicament.getItsForm().getName();
+				ArrayList<Molecule> excipiants = new ArrayList<Molecule>();
+				excipiants = medicament.getExcipiants();
+
+				
+				this.createPdf(name, nameMolecule, excipiants, form);
 				break;
 			case "valider":
 				//Récupération des informations saisies par l'utilisateur
@@ -290,14 +302,24 @@ public class Ctrl implements ActionListener, MouseListener{
 		}
 		return liste;
 	}
-	private void createPdf(String name, String actif, String excipient){
+	private void createPdf(String name, String actif, ArrayList<Molecule> excipiant, String form){
 		Document document = new Document();
 		try{
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("Notice "+name+" .pdf"));
 			document.open();
 			document.addAuthor(Persistence.getComputerFullName());
 			document.addTitle(name);
-			document.add(new Paragraph("Contenu du paragraphe"));
+			Paragraph chapterTitle = new Paragraph("Notice du médicament : "+name);
+			Chapter chapter1 = new Chapter(chapterTitle, 1);
+		    chapter1.setNumberDepth(0);
+		    Paragraph Composition = new Paragraph("Composition du médicament : ");
+		    Chapter chapter2 = new Chapter(Composition,2);
+		    chapter2.setNumberDepth(1);
+			document.add(new Paragraph("Ce médicament à pour principe actif : "+ actif+ "."));
+			document.add(new Paragraph ("Ce médicament a pour excipient : "));
+			for (Molecule mol : excipiant) {
+				document.add(new Paragraph (mol.getLibelle()));
+			}
 			document.close();
 			writer.close();
 		} catch (DocumentException e)

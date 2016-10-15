@@ -53,6 +53,9 @@ public class Medicine {
 	public void addMyExcipiants(Molecule mol){
 		this.mesExcipiants.add(mol);
 	}
+	public ArrayList<Molecule> getExcipiants(){
+		return mesExcipiants;
+	}
 	/**
 	 * Accesseur en lecture sur le nom du médicament
 	 * @return le nom du médicament

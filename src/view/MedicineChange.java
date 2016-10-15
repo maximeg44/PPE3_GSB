@@ -137,4 +137,5 @@ public class MedicineChange extends JDialog implements MyView{
 		this.btnPdf.setActionCommand("MedicineChange_PDF");
 		this.btnPdf.addActionListener(ctrl);
 	}
+	
 }
