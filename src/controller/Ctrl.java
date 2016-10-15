@@ -362,7 +362,6 @@ public class Ctrl implements ActionListener, MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
