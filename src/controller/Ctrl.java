@@ -25,9 +25,11 @@ import view.MedicineAddMolecule;
 import view.MedicineChange;
 import view.MedicineHome;
 import view.MedicineSearch;
+import view.MoleculeAdd;
+import view.MoleculeSearch;
 /**
  * Classe CONTROLEUR
- * @author xavier
+ * @author Maxime
  *
  */
 public class Ctrl implements ActionListener, MouseListener{
@@ -59,7 +61,7 @@ public class Ctrl implements ActionListener, MouseListener{
 			JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
 		}
 		for(int i=0;i<dataMolecules.length;i++) {
-			new Molecule(Integer.parseInt(dataMolecules[i][0]),dataMolecules[i][1]);
+			new Molecule(dataMolecules[i][1]);
 		}
 		//Création des objets Medicine
 				String[][] dataMed = null;
@@ -164,7 +166,7 @@ public class Ctrl implements ActionListener, MouseListener{
 					Medicine med = new Medicine(nom,forme,DatesConverter.FRStringToDate(dateB),molecule);
 					//INSERT dans la BD
 					try {
-						Persistence.insertMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate(),med.getItsMolecule().getId());
+						Persistence.insertMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate(),med.getItsMolecule().getIdByName(med.getName()));
 						//Message de confirmation pour l'utilisateur
 						JOptionPane.showMessageDialog(null,"Le médicament a bien été ajouté","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
 						//Réinitialisation des champs
@@ -181,6 +183,47 @@ public class Ctrl implements ActionListener, MouseListener{
 				break;
 			}
 			break;
+		case "MedicineAddMolecule":
+			switch(what){
+			case "Ajouter":
+				//création de la vu ajout d'une molécule
+				MoleculeAdd frame = new MoleculeAdd();
+				frame.assignListener(this);
+				frame.setVisible(true);
+				break;
+			case "Modifier":
+				//création de la vu ajout d'une molécule
+				String[][] dataTable = this.moleculeTable();
+				String[] dataColumns = {"Nom"};
+				//Création de la vue de recherche d'un médicament
+				MoleculeSearch frame1 = new MoleculeSearch(dataTable,dataColumns);
+				//Assignation d'un observateur sur cette vue
+				frame1.assignListener(this);
+				//Affichage de la vue
+				frame1.setVisible(true);
+				break;
+			}
+		case "MoleculeAdd":
+			switch(what){
+			case "Valider":
+				//traitement de création d'une nouvelle molécule
+				String name = MoleculeAdd.getMoleculeName();
+				if(name.equals(""))
+					JOptionPane.showMessageDialog(null, "Le nom de la molécule a été ommis veuillez un nom");
+				if (Molecule.getMoleculesByLibelle(name) == null){
+					Molecule newMol = new Molecule(name);
+					try {
+						Persistence.insertMolecule(newMol.getLibelle());
+						JOptionPane.showMessageDialog(null,"La molécule a bien été enregistrée dans la base","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
+					}catch (SQLException e){
+						String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
+						JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else
+					JOptionPane.showMessageDialog(null,"Le nom de cette molécule existe déjà, enregistrement en base impossible","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
+			}
+			break;	
 		case "MedicineSearch":
 				break;
 		case "MedicineChange":
@@ -206,9 +249,9 @@ public class Ctrl implements ActionListener, MouseListener{
 				try {
 					Persistence.updateMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate());
 					//Mise à jour de la jtable
-					String[][] dataTable = this.medicinesTable();
-					String[] dataColumns = {"Nom","Forme","Brevet"};
-					MedicineSearch.setTable(dataTable, dataColumns);
+					String[][] dataTable2 = this.medicinesTable();
+					String[] dataColumns2 = {"Nom","Forme","Brevet"};
+					MedicineSearch.setTable(dataTable2, dataColumns2);
 					//Modification du bouton (annuler devient fermer)
 					MedicineChange.btnAnnuler.setText("Fermer");
 					//Message de confirmation pour l'utilisateur
@@ -234,6 +277,15 @@ public class Ctrl implements ActionListener, MouseListener{
 			liste[i][0]=m.getName();
 			liste[i][1]=m.getItsForm().getName();
 			liste[i][2]=DatesConverter.dateToStringFR(m.getPatentDate());
+			i++;
+		}
+		return liste;
+	}
+	private String[][] moleculeTable(){
+		int i=0;
+		String[][] liste = new String[Molecule.allTheMolecules.size()][1];
+		for (Molecule mol : Molecule.allTheMolecules) {
+			liste[i][0]=mol.getLibelle();
 			i++;
 		}
 		return liste;
@@ -285,26 +337,26 @@ public class Ctrl implements ActionListener, MouseListener{
 	 */
 	@Override
 	public void mouseClicked(MouseEvent evt) {
-		//S'il s'agit d'un double-clic
-		if(evt.getClickCount()==2){
-			//Récupération de la jtable dans laquelle l'utilisateur a double-cliqué
-			JTable laTable = (JTable)evt.getComponent();
-			//Récupération du numéro de la ligne de cette jtable sur laquelle il a double-cliqué
-			int row=laTable.rowAtPoint(evt.getPoint());
-			//Récupération du médicament à partir de ces informations
-			Medicine med = Medicine.getMedicineByName(laTable.getValueAt(row,0).toString());
-			//Création d'un tableau contenant le détail du médicament
-			String[] data = new String[3];
-			data[0]=med.getName();
-			data[1]=med.getItsForm().getName();
-			data[2]=DatesConverter.dateToStringFR(med.getPatentDate());
-			//Création de la vue de modification du médicament sélectionné dans la jtable
-			MedicineChange frame = new MedicineChange(this.formsBox(),data);
-			//Assignation d'un observateur sur cette vue
-			frame.assignListener(this);
-			//Affichage de la vue
-			frame.setVisible(true);
-		 } 
+			//S'il s'agit d'un double-clic
+			if(evt.getClickCount()==2){
+				//Récupération de la jtable dans laquelle l'utilisateur a double-cliqué
+				JTable laTable = (JTable)evt.getComponent();
+				//Récupération du numéro de la ligne de cette jtable sur laquelle il a double-cliqué
+				int row=laTable.rowAtPoint(evt.getPoint());
+				//Récupération du médicament à partir de ces informations
+				Medicine med = Medicine.getMedicineByName(laTable.getValueAt(row,0).toString());
+				//Création d'un tableau contenant le détail du médicament
+				String[] data = new String[3];
+				data[0]=med.getName();
+				data[1]=med.getItsForm().getName();
+				data[2]=DatesConverter.dateToStringFR(med.getPatentDate());
+				//Création de la vue de modification du médicament sélectionné dans la jtable
+				MedicineChange frame = new MedicineChange(this.formsBox(),data);
+				//Assignation d'un observateur sur cette vue
+				frame.assignListener(this);
+				//Affichage de la vue
+				frame.setVisible(true);
+			}
 	}
 
 	@Override

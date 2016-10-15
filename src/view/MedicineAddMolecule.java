@@ -12,10 +12,14 @@ import java.awt.Font;
 public class MedicineAddMolecule extends JFrame implements MyView{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JButton btnAjouter;
+	private JButton btnSupprimer;
+	private JButton btnFermer;
+	private JButton btnModifier;
 	
 	
 	public MedicineAddMolecule() {
-		setTitle("Mol\u00E9cule - Accueuil");
+		setTitle("Mol\u00E9cule - Accueil");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -28,7 +32,7 @@ public class MedicineAddMolecule extends JFrame implements MyView{
 		lblNewLabel.setBounds(133, 41, 146, 29);
 		contentPane.add(lblNewLabel);
 		
-		JButton btnAjouter = new JButton("Ajouter");
+		btnAjouter = new JButton("Ajouter");
 		btnAjouter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -36,15 +40,25 @@ public class MedicineAddMolecule extends JFrame implements MyView{
 		btnAjouter.setBounds(133, 81, 132, 23);
 		contentPane.add(btnAjouter);
 		
-		JButton btnSupprimer = new JButton("Supprimer");
+		btnSupprimer = new JButton("Supprimer");
 		btnSupprimer.setBounds(133, 115, 131, 23);
 		contentPane.add(btnSupprimer);
 		
-		JButton btnFermer = new JButton("Fermer");
+		
+		btnFermer = new JButton("Fermer");
+		btnFermer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnFermer.setBounds(335, 228, 89, 23);
 		contentPane.add(btnFermer);
 		
-		JButton btnModifier = new JButton("Modifier");
+		btnModifier = new JButton("Modifier");
+		btnModifier.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnModifier.setBounds(133, 149, 132, 23);
 		contentPane.add(btnModifier);
 		
@@ -52,7 +66,10 @@ public class MedicineAddMolecule extends JFrame implements MyView{
 
 	@Override
 	public void assignListener(Ctrl ctrl) {
-		
+		btnAjouter.setActionCommand("MedicineAddMolecule_Ajouter");
+		btnAjouter.addActionListener(ctrl);
+		btnModifier.setActionCommand("MedicineAddMolecule_Modifier");
+		btnModifier.addActionListener(ctrl);
 		
 	}
 }

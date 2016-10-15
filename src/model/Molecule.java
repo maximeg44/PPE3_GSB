@@ -1,9 +1,11 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import library.Persistence;
+
 public class Molecule {
-	private int id;
 	private String libelle;	
 	public static ArrayList<Molecule> allTheMolecules = new ArrayList<Molecule>();
 	
@@ -13,27 +15,18 @@ public class Molecule {
 	 * @param id identifiant de la nouvelle molecule
 	 * @param libelle nom de la nouvelle molecule
 	 */
-	public Molecule(int id, String libelle){
+	public Molecule(String libelle){
 		super();
-		this.id=id;
 		this.libelle=libelle;
 		allTheMolecules.add(this);
-	}
-	
-	public int getId(){
-		return id;
 	}
 	
 	public String getLibelle(){
 		return libelle;
 	}
 	
-	public static Molecule getMoleculeById(int id){
-		Molecule found = null;
-		for (Molecule m : Molecule.allTheMolecules){
-			if(m.getId()==id)
-				found=m;
-		}
+	public static Molecule getMoleculeById(int id) throws SQLException{
+		Molecule found = getMoleculesByLibelle(Persistence.searchMoleculeById(id));
 		return found;
 	}
 	
@@ -44,6 +37,11 @@ public class Molecule {
 				found=m;
 		}
 		return found;
+	}
+	
+	public int getIdByName(String name) throws SQLException{
+		int id = Persistence.searchIdByName(name);
+		return id;
 	}
 	
 }

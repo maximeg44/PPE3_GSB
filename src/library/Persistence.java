@@ -69,11 +69,28 @@
  	public static void insertForm(String name) throws SQLException{
  		Connection cn = Persistence.connection();
  		Statement stmt;
- 		
  		try {
  			 stmt = cn.createStatement();
  			stmt.executeUpdate("INSERT INTO forme (nom) VALUES ('"+name+"')");
  		} catch (SQLException e) {
+ 			throw e;
+ 		}
+ 		finally{
+ 			Persistence.closeConnection(cn);
+ 		}
+ 	}
+ 	/**
+ 	 * Methode d'INSERT d'une nouvelle molécule
+ 	 * @param name le nom de la molécule
+ 	 * @throws SQLException l'excpetion SQL levée
+ 	 */
+ 	public static void insertMolecule(String name) throws SQLException{
+ 		Connection cn = Persistence.connection();
+ 		Statement stmt;
+ 		try {
+ 			stmt = cn.createStatement();
+ 			stmt.executeUpdate("INSERT INTO molecule (libelle) VALUES ('"+name+"')");
+ 		}catch (SQLException e) {
  			throw e;
  		}
  		finally{
@@ -200,12 +217,13 @@
  	}
  	/**
  	 * Méthode qui permet de récupérer le nom d'un médicament via un ID médicament
+ 	 * @return nom
  	 * @throws SQLException l'exception SQL levée
  	 */
  	public static String searchIdMedicine(int id) throws SQLException{
  		Connection cn = Persistence.connection();
  		Statement stmt;
- 		String nom;
+ 		String nom =null;
  		try{
  			stmt = cn.createStatement();
  			nom = stmt.executeQuery("Select nom FROM medicament where identifiant ="+ id ).toString();
@@ -216,9 +234,45 @@
  			Persistence.closeConnection(cn);
  		}
  		return nom;
- 		
  	}
  	
+ 	/**
+ 	 * Méthode qui permet de récupérer le nom d'une molécule via un ID
+ 	 * @throws SQLException l'exception SQL levée
+ 	 * @return int ID molécule
+ 	 */
+ 	public static String searchMoleculeById(int id) throws SQLException{
+ 		Connection cn= Persistence.connection();
+ 		Statement stmt;
+ 		String libelle = null;
+ 		try{
+ 			stmt = cn.createStatement();
+ 			libelle = stmt.executeQuery("SELECT LIBELLE FROM MOLECULE WHERE IDENTIFIANT="+ id).toString();
+ 		}catch(SQLException e){
+ 			throw e;
+ 		}
+ 		finally{
+ 			Persistence.closeConnection(cn);
+ 		}
+ 		return libelle;
+ 	}
+
+	public static int searchIdByName(String name) throws SQLException {
+		// TODO Auto-generated method stub
+		Connection cn = Persistence.connection();
+		Statement stmt;
+		int id;
+		try{
+			stmt = cn.createStatement();
+			id = Integer.parseInt(stmt.executeQuery("SELECT ID FROM MOLECULE WHERE LIBELLE like '"+name+"'").toString());
+		}catch(SQLException e){
+			throw e;
+		}
+		finally{
+			Persistence.closeConnection(cn);
+		}
+		return id;
+	}
  	
  	
  	

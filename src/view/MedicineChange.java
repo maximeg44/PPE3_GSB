@@ -85,7 +85,7 @@ public class MedicineChange extends JDialog implements MyView{
 		lblForme.setBounds(63, 127, 70, 14);
 		contentPanel.add(lblForme);
 		
-		cbxFormes = new JComboBox<String>(forms); //
+		cbxFormes = new JComboBox<String>(forms); //forms
 		cbxFormes.setBounds(140, 124, 192, 20);
 		contentPanel.add(cbxFormes);
 		cbxFormes.setSelectedItem(medicine[1]);
