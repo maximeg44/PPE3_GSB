@@ -56,6 +56,7 @@ public class MedicineSearch extends JDialog implements MyView{
 			{
 				tableMed = new JTable();
 				tableMed.setEnabled(false);
+				tableMed.setName("tableMedicine");
 				setTable(dataTable, columnsTable);
 				scrollPane.setViewportView(tableMed);
 			}

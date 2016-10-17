@@ -28,6 +28,7 @@ import view.MedicineChange;
 import view.MedicineHome;
 import view.MedicineSearch;
 import view.MoleculeAdd;
+import view.MoleculeChange;
 import view.MoleculeSearch;
 /**
  * Classe CONTROLEUR
@@ -36,6 +37,7 @@ import view.MoleculeSearch;
  */
 public class Ctrl implements ActionListener, MouseListener{
 	
+	private static String oldNameMolecule;
 	/**
 	 * Constructeur de la classe Ctrl
 	 * Ce constructeur permet, en plus de créer une instance de Ctrl, de créer tous les objets de l'application à partir de la base de données
@@ -211,71 +213,98 @@ public class Ctrl implements ActionListener, MouseListener{
 				//traitement de création d'une nouvelle molécule
 				String name = MoleculeAdd.getMoleculeName();
 				if(name.equals(""))
-					JOptionPane.showMessageDialog(null, "Le nom de la molécule a été ommis veuillez un nom");
-				if (Molecule.getMoleculesByLibelle(name) == null){
-					Molecule newMol = new Molecule(name);
-					try {
-						Persistence.insertMolecule(newMol.getLibelle());
-						JOptionPane.showMessageDialog(null,"La molécule a bien été enregistrée dans la base","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
-					}catch (SQLException e){
-						String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
-						JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Le nom de la molécule a été ommis veuillez un saisir nom");
+				else{
+					if (Molecule.getMoleculesByLibelle(name) == null){
+						Molecule newMol = new Molecule(name);
+						try {
+							Persistence.insertMolecule(newMol.getLibelle());
+							JOptionPane.showMessageDialog(null,"La molécule a bien été enregistrée dans la base","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
+						}catch (SQLException e){
+							String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
+							JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+						}
 					}
+					else
+						JOptionPane.showMessageDialog(null,"Le nom de cette molécule existe déjà, enregistrement en base impossible","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
 				}
-				else
-					JOptionPane.showMessageDialog(null,"Le nom de cette molécule existe déjà, enregistrement en base impossible","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);
 			}
 			break;	
 		case "MedicineSearch":
 				break;
+		case "MoleculeChange":
+			switch(what){
+				case"valider":
+					String libelle = MoleculeChange.getTxtName();
+					//Récupération de l'objet Molecule à modifier
+					Molecule mol = Molecule.getMoleculesByLibelle(oldNameMolecule);
+					//UPDATE dans la BD
+					try {
+						Persistence.updateMolecule(libelle, oldNameMolecule);
+						//Mise à jour de la jtable
+						String[][] dataTable2 = this.moleculeTable();
+						String[] dataColumns2 = {"Nom"};
+						MoleculeSearch.setTable(dataTable2, dataColumns2);
+						//Modification du bouton (annuler devient fermer)
+						MoleculeChange.btnAnnuler.setText("Fermer");
+						//Message de confirmation pour l'utilisateur
+						JOptionPane.showMessageDialog(null,"La molécule a bien été modifié","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);					
+					} catch (SQLException e) {
+						String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
+						JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+					}
+					break;
+				}
+			break;
+			
 		case "MedicineChange":
 			switch(what){
-			case "PDF":
-				String name = MedicineChange.getTxtName();
-				Medicine medicament=null;
-				for (Medicine med : Medicine.allTheMedicines) {
-					if(med.getName().equals(name)){
-						medicament = med;
+				case "PDF":
+					String name = MedicineChange.getTxtName();
+					Medicine medicament=null;
+					for (Medicine med : Medicine.allTheMedicines) {
+						if(med.getName().equals(name)){
+							medicament = med;
+						}
 					}
+					String nameMolecule = medicament.getItsMolecule().getLibelle();
+					String form = medicament.getItsForm().getName();
+					ArrayList<Molecule> excipiants = new ArrayList<Molecule>();
+					excipiants = medicament.getExcipiants();
+	
+					
+					this.createPdf(name, nameMolecule, excipiants, form);
+					break;
+				case "valider":
+					//Récupération des informations saisies par l'utilisateur
+					String nom = MedicineChange.getTxtName();
+					String nomF = MedicineChange.getTxtForm();
+					Form forme = Form.getFormByName(nomF);
+					String dateB = MedicineChange.getTxtPatentDate();
+					//Récupération de l'objet Medicine à modifier
+					Medicine med = Medicine.getMedicineByName(nom);
+					//Modification de celui-ci à travers les setteurs
+					med.setItsForm(forme);
+					med.setPatentDate(DatesConverter.FRStringToDate(dateB));
+					//UPDATE dans la BD
+					try {
+						Persistence.updateMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate());
+						//Mise à jour de la jtable
+						String[][] dataTable2 = this.medicinesTable();
+						String[] dataColumns2 = {"Nom","Forme","Brevet"};
+						MedicineSearch.setTable(dataTable2, dataColumns2);
+						//Modification du bouton (annuler devient fermer)
+						MedicineChange.btnAnnuler.setText("Fermer");
+						//Message de confirmation pour l'utilisateur
+						JOptionPane.showMessageDialog(null,"Le médicament a bien été modifié","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);					
+					} catch (SQLException e) {
+						String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
+						JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
+					}
+					break;
 				}
-				String nameMolecule = medicament.getItsMolecule().getLibelle();
-				String form = medicament.getItsForm().getName();
-				ArrayList<Molecule> excipiants = new ArrayList<Molecule>();
-				excipiants = medicament.getExcipiants();
-
-				
-				this.createPdf(name, nameMolecule, excipiants, form);
 				break;
-			case "valider":
-				//Récupération des informations saisies par l'utilisateur
-				String nom = MedicineChange.getTxtName();
-				String nomF = MedicineChange.getTxtForm();
-				Form forme = Form.getFormByName(nomF);
-				String dateB = MedicineChange.getTxtPatentDate();
-				//Récupération de l'objet Medicine à modifier
-				Medicine med = Medicine.getMedicineByName(nom);
-				//Modification de celui-ci à travers les setteurs
-				med.setItsForm(forme);
-				med.setPatentDate(DatesConverter.FRStringToDate(dateB));
-				//UPDATE dans la BD
-				try {
-					Persistence.updateMedicine(med.getName(),med.getItsForm().getId(),med.getPatentDate());
-					//Mise à jour de la jtable
-					String[][] dataTable2 = this.medicinesTable();
-					String[] dataColumns2 = {"Nom","Forme","Brevet"};
-					MedicineSearch.setTable(dataTable2, dataColumns2);
-					//Modification du bouton (annuler devient fermer)
-					MedicineChange.btnAnnuler.setText("Fermer");
-					//Message de confirmation pour l'utilisateur
-					JOptionPane.showMessageDialog(null,"Le médicament a bien été modifié","Confirmation Enregistrement",JOptionPane.INFORMATION_MESSAGE);					
-				} catch (SQLException e) {
-					String message = "Erreur lors de l'echange avec la base de données. L'application a rencontrée l'erreur : "+e.getMessage();
-					JOptionPane.showMessageDialog(null,message,"Erreur SQL",JOptionPane.ERROR_MESSAGE);
-				}
-				break;
-			}
-			break;
-		}	
+			}	
 	}
 
 	/**
@@ -365,19 +394,57 @@ public class Ctrl implements ActionListener, MouseListener{
 				JTable laTable = (JTable)evt.getComponent();
 				//Récupération du numéro de la ligne de cette jtable sur laquelle il a double-cliqué
 				int row=laTable.rowAtPoint(evt.getPoint());
-				//Récupération du médicament à partir de ces informations
-				Medicine med = Medicine.getMedicineByName(laTable.getValueAt(row,0).toString());
-				//Création d'un tableau contenant le détail du médicament
-				String[] data = new String[3];
-				data[0]=med.getName();
-				data[1]=med.getItsForm().getName();
-				data[2]=DatesConverter.dateToStringFR(med.getPatentDate());
-				//Création de la vue de modification du médicament sélectionné dans la jtable
-				MedicineChange frame = new MedicineChange(this.formsBox(),data);
-				//Assignation d'un observateur sur cette vue
-				frame.assignListener(this);
-				//Affichage de la vue
-				frame.setVisible(true);
+				if(laTable.getName().equals("tableMolecule")){
+					Molecule mol = Molecule.getMoleculesByLibelle(laTable.getValueAt(row,0).toString());
+					String[] dataMolecule = new String[1];
+					dataMolecule[0]=mol.getLibelle();
+					oldNameMolecule = mol.getLibelle();
+					MoleculeChange frame2 = new MoleculeChange(dataMolecule);
+					frame2.assignListener(this);
+					frame2.setVisible(true);
+				}
+				else{
+					//Récupération du médicament à partir de ces informations
+					Medicine med = Medicine.getMedicineByName(laTable.getValueAt(row,0).toString());
+					//Création d'un tableau contenant le détail du médicament
+					String[] data = new String[3];
+					data[0]=med.getName();
+					data[1]=med.getItsForm().getName();
+					data[2]=DatesConverter.dateToStringFR(med.getPatentDate());
+					//Création de la vue de modification du médicament sélectionné dans la jtable
+					MedicineChange frame = new MedicineChange(this.formsBox(),data);
+					//Assignation d'un observateur sur cette vue
+					frame.assignListener(this);
+					//Affichage de la vue
+					frame.setVisible(true);
+				}
+				//Voir pour remettre en place après test
+				/*switch(laTable.getName()){
+					case"tableMolecule":
+						Molecule mol = Molecule.getMoleculesByLibelle(laTable.getValueAt(row,0).toString());
+						String[] dataMolecule = new String[1];
+						dataMolecule[0]=mol.getLibelle();
+						oldNameMolecule = mol.getLibelle();
+						MoleculeChange frame2 = new MoleculeChange(dataMolecule);
+						frame2.assignListener(this);
+						frame2.setVisible(true);
+						break;
+					case"tableMedicament":
+						//Récupération du médicament à partir de ces informations
+						Medicine med = Medicine.getMedicineByName(laTable.getValueAt(row,0).toString());
+						//Création d'un tableau contenant le détail du médicament
+						String[] data = new String[3];
+						data[0]=med.getName();
+						data[1]=med.getItsForm().getName();
+						data[2]=DatesConverter.dateToStringFR(med.getPatentDate());
+						//Création de la vue de modification du médicament sélectionné dans la jtable
+						MedicineChange frame = new MedicineChange(this.formsBox(),data);
+						//Assignation d'un observateur sur cette vue
+						frame.assignListener(this);
+						//Affichage de la vue
+						frame.setVisible(true);
+						break;
+				}*/
 			}
 	}
 

@@ -55,6 +55,7 @@ public class MoleculeSearch extends JDialog implements MyView{
 			contentPanel.add(scrollPane);
 			{
 				tableMolecule = new JTable();
+				tableMolecule.setName("tableMolecule");
 				tableMolecule.setEnabled(false);
 				setTable(dataTable, columnsTable);
 				scrollPane.setViewportView(tableMolecule);
@@ -78,6 +79,6 @@ public class MoleculeSearch extends JDialog implements MyView{
 
 	@Override
 	public void assignListener(Ctrl ctrl) {
-		MoleculeSearch.tableMolecule.addMouseListener(ctrl);	
+		MoleculeSearch.tableMolecule.addMouseListener(ctrl);
 	}
 }

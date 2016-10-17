@@ -216,6 +216,24 @@
  		}
  	}
  	/**
+ 	 * Methode d'UPDATE d'une molécule
+ 	 * @param nom le libelle de la molécule à modifier
+ 	 * @throws SQLException l'exception SQL levée
+ 	 */
+ 	public static void updateMolecule(String name, String oldName) throws SQLException{
+ 		Connection cn = Persistence.connection();
+ 		Statement stmt;
+ 		try{
+ 			stmt = cn.createStatement();
+ 			stmt.executeUpdate("UPDATE molecule SET libelle = '"+name+"'WHERE libelle like '"+oldName+"'");
+ 		}catch(SQLException e){
+ 			throw e;
+ 		}
+ 		finally{
+ 			Persistence.closeConnection(cn);
+ 		}
+ 	}
+ 	/**
  	 * Méthode qui permet de récupérer le nom d'un médicament via un ID médicament
  	 * @return nom
  	 * @throws SQLException l'exception SQL levée
