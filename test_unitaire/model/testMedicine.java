@@ -21,7 +21,7 @@ public class testMedicine {
 	@Before
 	public void setUp() throws Exception {
 		form = new Form (1, "solution");
-		mol = new Molecule(1,"libelleMol");
+		mol = new Molecule("libelleMol");
 		date = new GregorianCalendar(2000, 0, 0);
 		medicament = new Medicine ("medoc", form, date, mol);
 		mesMedocs.add(medicament);

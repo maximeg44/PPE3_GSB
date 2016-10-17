@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -14,7 +15,7 @@ public class testMolecules {
 
 	@Before
 	public void setUp() throws Exception {
-		maMolecule = new Molecule (1, "nomMol");
+		maMolecule = new Molecule ("abacavir");
 		molecules = new ArrayList<Molecule>();
 		molecules.add(maMolecule);
 	}
@@ -25,18 +26,15 @@ public class testMolecules {
 
 	@Test
 	public void test_getLibelle() {		
-		assertEquals("nomMol", maMolecule.getLibelle());
+		assertEquals("abacavir", maMolecule.getLibelle());
 	}
+	
 	@Test
-	public void test_getId(){
-		assertEquals(1,maMolecule.getId());
-	}
-	@Test
-	public void test_getMoleculeById(){
+	public void test_getMoleculeById() throws SQLException{
 		assertEquals(Molecule.getMoleculeById(1), maMolecule);
 	}
 	@Test
 	public void test_getMoleculesByLibelle(){
-		assertEquals(Molecule.getMoleculesByLibelle("nomMol"), maMolecule);
+		assertEquals(Molecule.getMoleculesByLibelle("abacavir"), maMolecule);
 	}	
 }
